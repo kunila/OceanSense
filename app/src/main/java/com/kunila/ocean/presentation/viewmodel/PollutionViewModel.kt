@@ -1,6 +1,7 @@
 package com.kunila.ocean.presentation.viewmodel
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +19,15 @@ class PollutionViewModel @Inject constructor(
     private val _data = mutableStateOf<List<AirQualityData>>(emptyList())
     val data: State<List<AirQualityData>> get() = _data
 
+    private val _searchQuery = mutableStateOf("")
+    val searchQuery = _searchQuery
+
+    private val _pollutionData = derivedStateOf {
+        filterAirQualityData(_data.value, _searchQuery.value)
+    }
+    val pollutionData: State<List<AirQualityData>> get() = _pollutionData
+
+
     init {
         loadPollutionData()
     }
@@ -26,6 +36,23 @@ class PollutionViewModel @Inject constructor(
     {
         viewModelScope.launch {
             _data.value = getPollutionDataUseCase("pollution.csv")
+        }
+    }
+
+    fun onSearchQueryChange(query: String) {
+        _searchQuery.value = query
+    }
+
+    companion object {
+        fun filterAirQualityData(data: List<AirQualityData>, query: String): List<AirQualityData> {
+            return if (query.isEmpty()) {
+                data
+            } else {
+                data.filter { item ->
+                    item.region.contains(query, ignoreCase = true) ||
+                            item.date.contains(query, ignoreCase = true)
+                }
+            }
         }
     }
 }

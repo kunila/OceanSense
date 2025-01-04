@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.ocean"
+    namespace = "com.kunila.ocean"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.ocean"
+        applicationId = "com.kunila.ocean"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -77,6 +77,9 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
     //Coil
     implementation(libs.coil.compose)
+    //runtime
+    implementation(libs.androidx.runtime)
+
 }
 
 // Allow references to generated code

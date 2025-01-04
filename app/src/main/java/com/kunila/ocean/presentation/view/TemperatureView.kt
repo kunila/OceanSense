@@ -19,13 +19,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.ocean.R
+import com.kunila.ocean.R
 import com.kunila.ocean.data.datasource.CsvDataSource
 import com.kunila.ocean.data.repository.CsvRepository
 import com.kunila.ocean.domain.model.TemperatureData
@@ -34,18 +35,30 @@ import com.kunila.ocean.presentation.viewmodel.TemperatureViewModel
 
 @Composable
 fun TemperatureScreen(viewModel: TemperatureViewModel) {
-    val data by viewModel.data
+    var searchQuery by viewModel.searchQuery
+    val temperatureData by viewModel.temperatureData
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.teal_700))
             .wrapContentSize(Alignment.Center)
     ) {
+        SearchBar(
+            searchQuery = searchQuery,
+            onSearchQueryChange = { newQuery ->
+                searchQuery = newQuery
+                viewModel.onSearchQueryChange(newQuery)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(16.dp, 0.dp, 16.dp, 16.dp)
         ) {
-            items(data) { item ->
+            items(temperatureData) { item ->
                 TemperatureRow(item)
                 Spacer(modifier = Modifier.height(8.dp))
             }

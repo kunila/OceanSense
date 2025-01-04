@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kunila.ocean.domain.model.ProductData
+import com.kunila.ocean.domain.model.WindSpeedData
 import com.kunila.ocean.domain.usecase.GetProductDataUseCase
 import com.kunila.ocean.presentation.events.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
